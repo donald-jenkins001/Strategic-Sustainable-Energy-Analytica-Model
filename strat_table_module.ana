@@ -1,0 +1,108 @@
+{ From user KCLLC, Model ste at 5-Jun-2018 12:37:56 PM, encoding="UTF-8" }
+SoftwareVersion 5.0.17
+
+
+{ System Variables with non-default values: }
+SampleSize := 1000
+TypeChecking := 1
+Checking := 1
+SaveOptions := 2
+SaveValues := 0
+
+NodeInfo FormNode: 1,0,0,1,0,0,0,,0,0,,0,0
+
+
+
+Model ste
+Title: ste
+Author: Jeff
+Date: Mon, Apr 23, 2018 12:42 PM
+SaveAuthor: KCLLC
+SaveDate: Tue, Jun 5, 2018 12:37 PM
+DiagState: 2,1,-1,667,328,17
+WindState: 2,102,83,720,350
+FontStyle: Arial,15
+FileInfo: 0,Model ste,2,2,0,0,C:\Users\KCLLC\Dropbox\SPR 18 PHD CLASS\Bus Adm 743 Spr 18\Software\strat_table_module.ana
+
+Index Decision_index
+Title: Decision_index
+Definition: [1,2]
+NodeLocation: 160,72,1
+NodeSize: 64,24
+WindState: 2,102,83,720,350
+{!40000|Att_PrevIndexValue: [1,2]}
+
+Index Strategy_index
+Title: Strategy_index
+Definition: [1,2,3,4]
+NodeLocation: 320,72,1
+NodeSize: 64,24
+WindState: 2,102,83,720,350
+{!40000|Att_PrevIndexValue: [1,2,3,4]}
+
+Variable Strategy_table
+Title: Strategy_table
+Definition: Table(Decision_index,Strategy_index)(~
+1,3,4,2,~
+2,3,2,1)
+NodeLocation: 72,192,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ReformDef: [Decision_index,Strategy_index]
+
+Decision Strategy_selection
+Title: Strategy_selection
+Definition: [1,2,3,4]
+NodeLocation: 248,216,1
+NodeSize: 80,24
+WindState: 2,102,83,720,350
+DisplayOutputs: Variable Decision1, Variable Decision2
+
+Variable Decision1
+Title: Decision1
+Definition: Decision_options[Decision_index=1,Option_index=Strategy_table[Decision_index=1]]
+NodeLocation: 400,160,1
+NodeSize: 48,24
+WindState: 2,166,53,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+DisplayInputs: Decision Strategy_selection
+
+Variable Decision2
+Title: Decision2
+Definition: Decision_options[Decision_index=2,Option_index=Strategy_table[Decision_index=2]]
+NodeLocation: 352,384,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+DisplayInputs: Decision Strategy_selection
+
+Objective Profit
+Title: Profit
+Definition: Decision2-Decision1
+NodeLocation: 416,224,1
+NodeSize: 48,24
+WindState: 2,362,141,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Decision_options
+Title: Decision options
+Definition: Table(Decision_index,Option_index)(~
+0,100,500,2000,~
+25,50,400,800)
+NodeLocation: 608,72,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ReformDef: [Decision_index,Option_index]
+
+Index Option_index
+Title: Option index
+Definition: [1,2,3,4]
+NodeLocation: 192,496,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+{!40000|Att_PrevIndexValue: [1,2,3,4]}
+
+Close ste
+

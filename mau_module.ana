@@ -1,0 +1,121 @@
+{ From user KCLLC, Model mau_ex at 5-Jun-2018 4:50:48 PM, encoding="UTF-8" }
+SoftwareVersion 5.0.17
+
+
+{ System Variables with non-default values: }
+SampleSize := 1000
+TypeChecking := 1
+Checking := 1
+SaveOptions := 2
+SaveValues := 0
+{!40400|Sys_WindowsMaximized := 1}
+
+NodeInfo FormNode: 1,0,0,1,0,0,0,,0,0,,0,0
+
+
+
+Model mau_ex
+Title: mau ex
+Author: Jeff
+Date: Mon, Apr 23, 2018 12:58 PM
+SaveAuthor: KCLLC
+SaveDate: Tue, Jun 5, 2018 4:50 PM
+DiagState: 2,1,0,703,430,17
+WindState: 2,102,181,720,252
+FontStyle: Arial,15
+FileInfo: 0,Model mau_ex,2,2,0,0,C:\Users\KCLLC\Dropbox\SPR 18 PHD CLASS\Bus Adm 743 Spr 18\Software\mau_module.ana
+
+Variable Measure1
+Definition: 30
+NodeLocation: 176,96,1
+NodeSize: 48,24
+
+Variable Measure2
+Definition: 1400
+NodeLocation: 176,160,1
+NodeSize: 48,24
+
+Index Attribute1
+{!40000|Att_PrevIndexValue: [1,2,3,4]}
+Title: Attribute
+Definition: [1,2,3,4]
+NodeLocation: 344,24,1
+NodeSize: 48,24
+WindState: 2,-56,138,720,350
+
+Variable Measures
+Title: Measures
+Definition: Table(Attribute1)(Measure1,Measure2,Measure3,Measure4)
+IndexVals: ['item 1']
+NodeLocation: 336,112,1
+NodeSize: 48,24
+DefnState: 2,376,162,416,303,,DFNM
+ValueState: 2,804,25,416,303,,MIDM
+
+Variable Exponents
+Title: Exponents
+Definition: Table(Attribute1)(2,1.5,100p,1.25)
+NodeLocation: 344,344,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+
+Variable Weights
+Title: Weights
+Definition: Table(Attribute1)(0.2,0.3,0.1,0.4)
+NodeLocation: 336,424,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+
+Variable Single_attrib_util
+Title: Single_attrib_util
+Definition: (1-EXP(-Normalized_values*Exponents))/(1-EXP(-1*Exponents))
+NodeLocation: 624,136,1
+NodeSize: 72,32
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Multiattribute_util
+Title: Multiattribute_util
+Definition: sum(Single_attrib_util*Weights)
+NodeLocation: 600,240,1
+NodeSize: 72,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Measure3
+Definition: .6
+NodeLocation: 176,216,1
+NodeSize: 48,24
+
+Variable Measure4
+Definition: 500000
+NodeLocation: 176,296,1
+NodeSize: 48,24
+
+Variable Worst_cases
+Title: Worst cases
+Definition: Table(Attribute1)(90,800,0,350K)
+NodeLocation: 336,200,1
+NodeSize: 48,24
+WindState: 2,102,83,720,350
+
+Variable Best_cases
+Title: Best cases
+Definition: Table(Attribute1)(5,2400,1,800K)
+NodeLocation: 344,272,1
+NodeSize: 48,24
+
+Variable Normalized_values
+Title: Normalized values
+Definition: (Measures-Worst_cases)/(Best_cases-Worst_cases)
+NodeLocation: 472,136,1
+NodeSize: 56,24
+WindState: 2,447,99,720,350
+ValueState: 2,679,128,416,303,0,MIDM
+ReformVal: [0,Attribute1]
+Att__TotalsIndex: []
+
+Close mau_ex
+
