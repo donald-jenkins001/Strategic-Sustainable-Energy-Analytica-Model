@@ -19,16 +19,11 @@ Authors:
 
 Corresponding Author
 
-	Donald J. Jenkins
-	
-	donald.jenkins001@umb.edu
-	
-	+1 (617) 686-0649
-	
-	23 Fletcher St.
-	
+	Donald J. Jenkins	
+	donald.jenkins001@umb.edu	
+	+1 (617) 686-0649	
+	23 Fletcher St.	
 	Foxboro, MA, USA 02035
-
 
 Affiliations
 a	100 Morrissey Blvd.
