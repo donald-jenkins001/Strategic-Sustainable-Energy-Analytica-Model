@@ -9,11 +9,11 @@ Title: A Decision Analytic Tool for Corporate Strategic Sustainable Energy Purch
 
 Authors:
 
-	Donald J. Jenkins a 
+	Donald J. Jenkins (a) 
 	donald.jenkins001@umb.edu
 	ORCID 0000-0001-7901-0110
 
-	Jeffrey M. Keisler a
+	Jeffrey M. Keisler (a)
 	jeff.keisler@umb.edu
 	ORCID 0000-0002-9267-2327
 
@@ -26,7 +26,7 @@ Corresponding Author
 	Foxboro, MA, USA 02035
 
 Affiliations
-a	100 Morrissey Blvd.
+(a)	100 Morrissey Blvd.
 	College of Management
 	Management Science and Information Systems
 	University of Massachusetts Boston
