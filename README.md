@@ -3,7 +3,7 @@ This is the Analytica model discussed in the coming paper coauthored by Don Jenk
 
 Submitted for review
 
-Journal: Environment Systems and Decisions
+Journal: Environment Systems and Decisions (https://www.springer.com/journal/10669/)
 
 Title: A Decision Analytic Tool for Corporate Strategic Sustainable Energy Purchases
 
