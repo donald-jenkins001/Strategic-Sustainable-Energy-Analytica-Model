@@ -1,0 +1,1906 @@
+{ Analytica Model Sustainable_Energy_P, encoding="UTF-8" }
+SoftwareVersion 6.1.0
+
+
+{ System Variables with non-default values: }
+SampleSize := 1000
+{!40300|Att_SlicerPopupSize Run: 227,690}
+TypeChecking := 1
+Checking := 1
+SaveOptions := 2
+SaveValues := 0
+{!40400|Att_GraphSetupSlices Graph_KDE_Valdim: [3,1,DensityIndex,1]}
+{!40400|Sys_PdfSmoothFactor := 0.25}
+{!40400|Sys_WindowsMaximized := 1}
+{!40600|Att_PrevIndexValue AllProbabilityBands: [0,0.01,0.025,0.05,0.1,0.25,0.3333333333333333,0.5,0.6666666666666666,0.75,0.9,0.95,0.0975,0.99,1]}
+{!50400|Sys_UseLegacyColors := 1}
+
+DisplayOutputs Object: Variable Time_Price_Growth, Chance RECs_Price_Uncertain
+{!-50299|DiagramColor Model: 65535,65535,65535}
+{!-50299|DiagramColor Module: 65535,65535,65535}
+{!-50299|DiagramColor LinkModule: 65535,65535,65535}
+{!-50299|DiagramColor Library: 65535,65535,65535}
+{!-50299|DiagramColor LinkLibrary: 65535,65535,65535}
+{!-50299|DiagramColor Form: 65535,65535,65535}
+DisplayOutputs Chance: Variable Time_Price_Growth
+DisplayOutputs Index: Chance RECs_Price_Uncertain
+NodeInfo FormNode: 1,0,0,1,0,0,0,,0,0,,0,0
+NodeColor Text: 65535,65535,65535
+
+{!-60000|Attribute AcpStyles}
+
+AskAttribute Value,Variable,Yes
+
+Model Sustainable_Energy_P
+Title: Sustainable Energy Purchasing Strategy
+Description: This is the Multi-attribute Utility for Energy Purchasing Strategy model - BUSADM 743 Final Project - Don Jenkins
+Author: djenkins
+Date: Sun, May 6, 2018 4:14 PM
+DefaultSize: 48,24
+DiagState: 2,149,22,648,522,17,10
+WindState: 2,102,83,476,224
+DiagramColor: 65535,65535,65535
+FontStyle: Arial,15
+FileInfo: 0,Model Sustainable_Energy_P,2,2,0,0,C:\Users\Donald Jenkins\AppData\Local\Packages\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\TempState\Downloads\Don_Jenkins_Sustainable_Energy_Purchasing_Strategy_with_Discount_Rate.ana
+
+Module Strategy_Table
+Title: Strategy Table
+Description: This module holds the nodes that allow setting up specified strategies that will flow through the whole model, based on identifying the decsisions for each of the decision points in the decision index. The strategy index holds the list of strategies, the decision indx thel list of decisions, the startegy table lists out each decsion result for each strategy, and strategy selection is the decision point that will flow through the rest of the model. There are single nodes for each decsion that will allow us to feed offf of them to build out the modelling in other modules based on the decsions.
+Author: djenkins
+Date: Mon, May 7, 2018 4:09 PM
+NodeLocation: 96,140,1
+NodeSize: 48,24
+DiagState: 2,-22,70,744,412,17,10
+WindState: 2,839,297,476,224
+
+Variable Strategy_Table1
+Title: Strategy Table
+Description: Strategy Table - matrix of strategic choices and associated decision variables that are chosen
+Definition: Table(Decision_Index,Strategy_Index)(~
+1,2,2,2,2,~
+1,2,2,2,2,~
+4,3,1,1,2,~
+2,4,1,3,4,~
+2,1,1,1,1)
+NodeLocation: 104,288,1
+NodeSize: 48,24
+WindState: 2,0,162,664,124
+DefnState: 2,0,0,664,124,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Decision_Index,Strategy_Index]
+
+Index Decision_Index
+Att_PrevIndexValue: ['Build or Buy','On or Off Site','Renewable Energy Strategy','Purchase Strategy','Equipment Type']
+Title: Decision Index
+Description: This is the list of possible decsions that have to be made to execute the full decision tree that supports picking any particular strategy.
+Definition: ['Build or Buy','On or Off Site','Renewable Energy Strategy','Purchase Strategy','Equipment Type']
+NodeLocation: 400,80,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Index Strategy_Index
+Att_PrevIndexValue: ['Install own Green Gen','Cheapest Retail Energy Cost','No CAPEX w/ Green short-term','No CAPEX w/ Green long-term','Offset with Renewable Energy Credits']
+Title: Strategy Index
+Description: This is the list of strategies that can be implemented to approach the sustainable energy purchase.
+Definition: ['Install own Green Gen','Cheapest Retail Energy Cost','No CAPEX w/ Green short-term','No CAPEX w/ Green long-term','Offset with Renewable Energy Credits']
+NodeLocation: 240,80,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526349877
+
+Decision Strategy_Selection
+Att_PrevIndexValue: ['Install own Green Gen','Cheapest Retail Energy Cost','No CAPEX w/ Green short-term','No CAPEX w/ Green long-term','Offset with Renewable Energy Credits']
+Title: Strategy Selection
+Description: This is the decsion node that allows us to pick one of each strategies for t he overall analysis
+Definition: Choice(Self,0)
+NodeLocation: 520,288,1
+NodeSize: 48,24
+WindState: 2,680,162,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,680,486,664,124,0,MIDM
+{!40300|DomainExpr: Discrete('Install own Green Gen','Cheapest Retail Energy Cost','No CAPEX w/ Green short-term','No CAPEX w/ Green long-term','Offset with Renewable Energy Credits',type:'number')}
+{!40300|Att_SlicerPopupSize: 257,84}
+
+Variable Build_or_Buy
+Title: Build or Buy
+Description: This node models the Build or Buy Decision to be made (1 = Build, 2 = Buy)
+Definition: Strategy_Table1[Decision_Index ='Build or Buy',Strategy_Index=Strategy_Selection]~
+
+NodeLocation: 312,160,1
+NodeSize: 64,24
+WindState: 2,680,0,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,0,486,664,124,0,MIDM
+Aliases: Alias Al1525659174
+ReformVal: [Undefined,Strategy_Selection]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Index,4,Decision_Index,1,Strategy_Selection,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Decision_Index}
+
+Variable Renew_Energy_Strateg
+Title: Renew Energy Strategy
+Description: This node models the Renewable Energy Strategy Decsion to be made (1 =  Buy Green Energy, 2 = Buy Renewable Energy Credits, 3 = No Renewable Energy, 4 = Use Own Energy)
+Definition: Strategy_Table1[Decision_Index='Renewable Energy Strategy',Strategy_Index=Strategy_Selection]~
+
+NodeLocation: 312,288,1
+NodeSize: 64,24
+WindState: 2,680,0,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,43,226,664,266,0,MIDM
+Aliases: Alias Al1526415732, Alias Al1526422916
+ReformVal: [Undefined,Strategy_Selection]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Index,4,Decision_Index,1,Strategy_Selection,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Decision_Index}
+
+Variable On_or_Off_Site
+Title: On or Off Site
+Description: This node models the On or Off Site Decision to be made (1 = On Site, 2 = Off Site)
+Definition: Strategy_Table1[Decision_Index='On or Off Site',Strategy_Index=Strategy_Selection]~
+
+NodeLocation: 312,224,1
+NodeSize: 64,24
+WindState: 2,680,0,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,0,486,664,124,0,MIDM
+ReformVal: [Undefined,Strategy_Selection]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Index,4,Decision_Index,1,Strategy_Selection,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Decision_Index}
+
+Variable Purchase_Strategy
+Title: Purchase Strategy
+Description: This node models the Purchase Strategy Decision to be made (1 = Retail Green, 2 = Own Green, 3 = PPA, 4 = Retail Any)
+Definition: Strategy_Table1[Decision_Index='Purchase Strategy',Strategy_Index=Strategy_Selection]~
+
+NodeLocation: 312,352,1
+NodeSize: 64,24
+WindState: 2,680,0,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,0,486,664,124,0,MIDM
+Aliases: Alias Al1526266418
+ReformVal: [Undefined,Strategy_Selection]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Index,4,Decision_Index,1,Strategy_Selection,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Decision_Index}
+
+Variable New_or_Existing
+Title: New or Existing
+Description: This node models the New or Existing Equipment Decision to be made (1 = Existing, 2 = New)
+Definition: Strategy_Table1[Decision_Index='Equipment Type',Strategy_Index=Strategy_Selection]~
+
+NodeLocation: 312,416,1
+NodeSize: 64,24
+WindState: 2,680,0,664,124
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,0,486,664,124,0,MIDM
+ReformVal: [Undefined,Strategy_Selection]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Index,4,Decision_Index,1,Strategy_Selection,1]
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Decision_Index}
+
+Close Strategy_Table
+
+Module MAUT_Scoring
+Title: MAUT Scoring
+Description: This node houses the Multi-attribute Utility Score calculations. Inputs are the three attribute scoring arrays, normalizing factors, exponents for risk tolerance shaping, and attribute weighting factors. Output is the actual MAU scores.
+Author: djenkins
+Date: Mon, May 7, 2018 4:09 PM
+NodeLocation: 384,144,1
+NodeSize: 48,24
+DiagState: 2,862,38,432,489,17,10
+WindState: 2,102,83,476,224
+DiagramColor: 65535,65535,65535
+
+Index Attributes
+Att_PrevIndexValue: ['Spend','Green Value','Prestige']
+Title: Attributes
+Units: N/A
+Description: This node provides the list of attributes for use in indexing the three attribute MAUT score caculations
+Definition: ['Spend','Green Value','Prestige']
+NodeLocation: 304,56,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+{!40300|Att_SlicerPopupSize: 242,42}
+
+Variable Measures
+Title: Measures
+Units: N/A
+Description: This node brings together the outputs from the three attribute modules to prep for the MAUT calculations
+Definition: Table(Attributes)(Energy_Cost_Measure,Green_Measure,Prestige_Measure)
+NodeLocation: 264,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,1,CDFP
+GraphSetup: {!40400|Sys_PdfSmoothMethod:1}~
+{!40000|Att_ForceCategorical Graph_Pdf_Valdim:1}~
+{!40000|Att_CatLineStyle Graph_Pdf_Valdim:9}
+ReformDef: [Attributes,Contract_Length]
+ReformVal: [Self,Strategy_Selection,Undefined,1]
+Att_ResultSliceState: [Attributes,3,Strategy_Selection,5,Sys_LocalIndex('Step'),1]
+
+Constant Worst_Cases
+Title: Worst Cases
+Units: N/A
+Description: This node is a table of the bounds for the Worst case value for each of the attributes
+Definition: Table(Attributes)(2.811G,0,0)
+NodeLocation: 272,296,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,42}
+
+Constant Best_Cases
+Title: Best Cases
+Units: N/A
+Description: This node is a table of the bounds for the Best case value for each of the attributes
+Definition: Table(Attributes)(1.011G,5,5)
+NodeLocation: 320,360,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,42}
+
+Variable Normalized_Measures
+Title: Normalized Measures
+Units: Unitless
+Description: This node applies the upper and lower bounds for each attribute to normalize it to a unitless value from 0 to 1
+Definition: (Measures-Worst_cases)/(Best_cases-Worst_cases)
+NodeLocation: 384,216,1
+NodeSize: 56,24
+WindState: 2,102,83,476,529
+ValueState: 2,7,-3,559,558,1,PDFP
+GraphSetup: {!40000|Att_GraphValueRange Normalized_Measures:|1:1,,0,,,,,0,1,0}~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Attributes,Strategy_Selection,Undefined,2,1]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Attributes,3,Strategy_Selection,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+Att_ColorRole: Contract_Length
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+
+Variable Exponential_Utilitie
+Title: Exponential Utilities
+Units: Unitless
+Description: This node takes the normalized attribute values and shapes them into an exponential utility value to account for the risk tolerance shaped by the risk exponents
+Definition: (1-EXP(-Normalized_Measures*Risk_Exponents))/(1-EXP(-1*Risk_Exponents))
+NodeLocation: 512,216,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,631,1,571,612,1,PDFP
+GraphSetup: {!40000|Att_GraphValueRange Exponential_Utilitie:|1:1,,0,,,,,0,1,0}~
+{!40000|Att_CatLineStyle Graph_Pdf_Valdim:9}~
+{!40000|Att_ForceCategorical Graph_Pdf_Valdim:1}~
+{!40000|Att_GraphValueRange Graph_Cdf_Valdim:1,,0,1,,,,-0.1,1.1,0}~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Attributes,Strategy_Selection,Undefined,0,1]
+Att_ResultSliceState: [Attributes,3,Strategy_Selection,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+Att_ColorRole: Strategy_Selection
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+{!40600|Att_ClusterIndex: Attributes}
+
+Constant Risk_Exponents
+Title: Risk Exponents
+Units: Unitless
+Description: This node provides a list of the risk tolerance shaping values for each attribute to be used to turn the normalized measures into an exponential utility.
+Definition: Table(Attributes)(1,0.5,-0.5)
+NodeLocation: 472,360,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,711,268,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Weighted_Utilities
+Title: Weighted Utilities
+Units: Unitless
+Description: This node applies the assigned weights for each attribute to prepare it to calculate the final summed attribure scores
+Definition: Exponential_Utilitie*Calc_Weights
+NodeLocation: 632,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+GraphSetup: {!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Attributes,Strategy_Selection,Undefined,2,1]
+NumberFormat: 2,F,3,3,0,0,3,1,$,0,"ABBREV",0,,,0,0,15
+Att_ResultSliceState: [Attributes,1,Strategy_Selection,5,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+{!40600|Att_ClusterIndex: Attributes}
+
+Constant Attribute_Weights
+Title: Attribute Weights
+Units: Unitless
+Description: This node is a placeholder for a simple list of weights for the attributes
+Definition: Table(Attributes)(0.7,0.2,0.1)
+NodeLocation: 608,424,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526847250
+
+Variable Summed_Utilities
+Title: Summed Utilities
+Units: Unitless
+Description: This node combines the weighted attribute scores to come up with the final MAUT scores for each strategy
+Definition: Sum( Weighted_Utilities, Attributes)
+NodeLocation: 744,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,1,CDFP
+GraphSetup: {!40000|Att_GraphValueRange Summed_Utilities:|1:1,,0,,,,,0,1,0}~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Contract_Length,Strategy_Selection,Undefined,1,1]
+Att_XRole: -1
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+{!50000|Att_ColumnWidths: [225]}
+
+Alias Al1526349877
+Title: Strategy Index
+Definition: 1
+NodeLocation: 184,56,1
+NodeSize: 48,24
+Original: Strategy_Index
+
+Alias Al1526391347
+Title: Prestige Measure 1
+Definition: 1
+NodeLocation: 136,152,1
+NodeSize: 56,24
+Original: Prestige_Measure
+
+Alias Al1526424120
+Title: Combined Cost Norm
+Definition: 1
+NodeLocation: 136,280,1
+NodeSize: 56,24
+Original: Energy_Cost_Measure
+
+Alias Al1526427123
+Title: Green Measure 2
+Definition: 1
+NodeLocation: 136,216,1
+NodeSize: 56,24
+Original: Green_Measure
+
+Variable Weights_Sensitivity
+Title: Weights Sensitivity
+Units: N/A
+Description: This node uses a WhatIfAll analysis to evaluate the sensitivity of the MAUT Scores to the Attribute Weights
+Definition: WhatIfAll (MAUT_Score , Input_Sense, Range_Sense)
+NodeLocation: 816,360,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1526558651
+GraphSetup: {!40000|Flip:8}~
+{!40000|Att_GraphIndexRange Strategy_Selection:1,,,,,,10}~
+{!40000|Att_GraphValueRange Weights_Sensitivity:1,,0,0,,,10,0,1,0}~
+Att__BarOrigin Weights_Sensitivity:0~
+{!40000|Att_StackedBar Graph_Primary_Valdim:0}~
+BarOverlap:100~
+{!50000|Graph_SortBySpread:0}
+ReformVal: [Strategy_Selection,Sensitivity_Levels]
+Att_ResultSliceState: [Input_Sense,1,Sensitivity_Levels,1,Strategy_Selection,4]
+Att_OriginRole: Slice(Sensitivity_Levels,Sensitivity_Levels,2)
+{!40600|Att_ClusterIndex: Sensitivity_Levels}
+
+Module Weight_Determination
+Title: Weight Determination
+Description: This module houses the nodes that are used to shape the weights and be able to apply a sensitivity analysis to those weights
+Author: djenkins
+Date: Fri, May 18, 2018 9:34 PM
+NodeLocation: 608,360,1
+NodeSize: 64,24
+DiagState: 2,87,411,432,293,17
+WindState: 2,102,83,476,224
+
+Variable Cost_Weight
+Title: Cost Weight
+Units: Unitless
+Description: This node is the raw weight to apply for Price (0 - 100 scale)
+Definition: 100
+NodeLocation: 120,232,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Green_Weight
+Title: Green Weight
+Units: Unitless
+Description: This node is the raw weight to apply for Green Value (0 - 100 scale)
+Definition: 28.5
+NodeLocation: 240,232,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Prestige_Weight
+Title: Prestige Weight
+Units: Unitless
+Description: This node is the raw weight to apply for Prestige (0 - 100 scale)
+Definition: 14.25
+NodeLocation: 360,232,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Weights_Aggr
+Title: Weights Aggr
+Definition: Table(Attributes)(Cost_Weight,Green_Weight,Prestige_Weight)
+NodeLocation: 240,160,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Calc_Weights
+Title: Calc Weights
+Units: Unitless
+Description: This is the list of weights that will be applied to the attribute scores based on decision maker input on the value of each attribute
+Definition: Weights_Aggr/sum(Weights_Aggr)~
+
+NodeLocation: 240,88,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Alias Al1526556917
+Title: Sensitivity Levels
+Definition: 1
+NodeLocation: 240,448,1
+NodeSize: 48,24
+Original: Sensitivity_Levels
+
+Variable Input_Sense
+Title: Input Sense
+Units: N/A
+Description: This node brings together the  three weights so they can be used in the sensitivity analysis of weights on MAUT scores
+Definition: [Prestige_Weight,Green_Weight,Cost_Weight]
+NodeLocation: 240,304,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Range_Sense
+Title: Range Sense
+Units: N/A
+Description: This node creates a table of the weights for low, baseline, and high levels for sensitivity analysis
+Definition: Input_Sense*Sensitivity_Levels
+NodeLocation: 240,376,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Alias Al1526558651
+Title: Tornado Weights
+Definition: 1
+NodeLocation: 360,344,1
+NodeSize: 48,24
+Original: Weights_Sensitivity
+
+Alias Al1526847250
+Title: Weights
+Definition: 1
+NodeLocation: 120,88,1
+NodeSize: 48,24
+Original: Attribute_Weights
+
+Close Weight_Determination
+
+Objective MAUT_Score
+Title: MAUT Score
+Description: This node brings together all the normalized and weighted utiity values for the decsions made by each strategy
+Definition: Summed_Utilities
+NodeLocation: 864,216,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,1,CDFP
+Aliases: Alias Al1526411102, Alias Al1525695607
+GraphSetup: Att_GraphValueRange Graph_Cdf_Valdim:1,,,1,,,5~
+Graph_KeyFont:,18,1~
+Graph_KeyTitleFont:,22,1~
+Graph_AxisLabelFont:,20,1~
+Graph_AxisTitleFont:Arial,22,1~
+Att_GraphValueRange MAUT_Score:|1:1,0,0,,,,,0,1,0~
+Att_CatLineStyle Graph_KDE_Valdim:9~
+DistSteps:1~
+{!40400|Sys_PdfSmoothMethod:1}~
+Att_ContLineStyle Graph_Pdf_Valdim:1~
+Att_ContLineStyle Graph_KDE_Valdim:1~
+Grid:0~
+Graph_LineThickness:4
+ReformVal: [Contract_Length,Strategy_Selection,Undefined,1,1]
+NumberFormat: 2,G,4,4,0,0,4,0,$,0,"ABBREV",0,,,0,0,2
+Att_ResultSliceState: [Weights_Aggr,1,Strategy_Selection,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+{!40700|Att_CellFormat: CellFormats(Undefined,CellSpan((Self.Statistics),CellNumberFormat('General',3,0,0,dateFormat:'ABBREV'),5,header:0),CellSpan((Self.Statistics),CellSpan(Strategy_Selection,CellNumberFormat('General',2,0,0,dateFormat:'ABBREV'),3,4,header:0),5,header:0),CellSpan((Self.Statistics),CellSpan(Strategy_Selection,CellNumberFormat('General',1,0,0,dateFormat:'ABBREV'),2,header:0),1,header:0))}
+
+Variable MAUT_Score_Importanc
+Title: MAUT Score Importance
+Units: N/A
+Description: This node uses a built in Analytica RankCorrel function to evaluate the sensitivity of the MAUT Score to the input variables..
+Definition: Abs( RankCorrel( MAUT_Score_Inputs, MAUT_Score ) )
+NodeLocation: 784,56,1
+NodeSize: 56,24
+NodeInfo: 1,1,1,1,1,1,0,0,0,0,,0,1,0
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1526849243
+GraphSetup: {!50000|Graph_SortBySpread:1}~
+BarOverlap:100~
+{!40000|Att_StackedBar Graph_Primary_Valdim:0}~
+Att__BarOrigin MAUT_Score_Importanc:0~
+{!40000|Att_ForceCategorical Graph_Primary_Valdim:1}~
+{!40000|Flip:8}
+ReformVal: [MAUT_Score_Inputs,MAUT_Score_Inputs]
+Att_ResultSliceState: [Strategy_Selection,3,Strategy_Selection,2,MAUT_Score_Inputs,1]
+Att_ColorRole: Null
+Att_OriginRole: Null
+{!40600|Att_ClusterIndex: Null}
+
+Module MAUT_Sens_Module
+Title: MAUT Sens Module
+Author: djenkins
+Date: Tue, May 15, 2018 6:21 PM
+NodeLocation: 512,56,1
+NodeSize: 56,24
+DiagState: 2,704,3,624,491,17,10
+WindState: 2,102,83,476,224
+
+Variable MAUT_Score_Inputs
+Title: MAUT Score Inputs
+Units: N/A
+Description: This node combines the variables that will be used in the MAUT Importance Score calculation
+Definition: [OPEX_Probs,CAPEX_Probs,Retail_Elevator,Rate_of_Inflation,RECs_Price_Uncertain,Fines_Uncertainty,Green_Util_Uncertain,Non_Green_Util_Uncer,Good_Prestige_Util_U,Bad_Prestige_Utility]
+NodeLocation: 136,120,1
+NodeSize: 56,24
+NodeInfo: 1,1,1,1,1,1,0,0,0,0,,0,1,0
+WindState: 2,726,203,476,224
+ValueState: 2,40,50,400,300,0,STAT
+
+Constant Sensitivity_Levels1
+Att_PrevIndexValue: ['Low','Baseline','High']
+Title: Sensitivity Levels
+Description: This node houses the range of calculations we want to do for MAUT sensitivity analysis, from low to baseline to high.
+Definition: Table(Self)(0.5,1,1.5)
+IndexVals: ['Low','Baseline','High']
+NodeLocation: 128,240,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15
+{!40300|Att_SlicerPopupSize: 227,80}
+
+Variable Sensitivity_Variabl1
+Title: Sensitivity Variables
+Description: This node pulls together the input variables from across the whole model to use for the MAUT score sensitivity analysis
+Definition: [PPA_Elevator,Retail_Elevator,Rate_of_Inflation,VAT,Adder_Charge_Rate,CAPEX_Probs,OPEX_Probs,Prestige_Measure,Green_Utility_Raw,Discount_Rate]
+NodeLocation: 328,120,1
+NodeSize: 56,24
+WindState: 2,716,58,476,224
+ValueState: 2,40,50,400,300,1,MEAN
+ReformVal: [Type_of_Electricity,Self]
+Att_ResultSliceState: [Type_of_Electricity,4,Types_of_Charges,1,Self,1]
+{!40300|Att_SlicerPopupSize: 242,168}
+
+Variable Input_Sens_Range1
+Title: Input Sens Range
+Units: N/A
+Description: This node creates an array of the sensitivity variables for the MAUT analysis bucketed by the Sensitivity Levels
+Definition: Sensitivity_Levels1*Sensitivity_Variabl1
+NodeLocation: 328,240,1
+NodeSize: 48,24
+WindState: 2,705,88,476,224
+ValueState: 2,40,50,400,300,0,MEAN
+ReformVal: [Type_of_Electricity,Sensitivity_Variabl1]
+Att_ResultSliceState: [Sensitivity_Levels1,3,Sensitivity_Variabl1,1,Sys_LocalIndex('Step'),1]
+
+Variable MAUT_Tornado
+Title: MAUT Sensitivity
+Description: This node uses a WhatIfAll analysis to determine the sensitivity of the MAUT Scores to the selected variables based on a range of sensitivity determined by the Input_Sens_Range.
+Definition: WhatIfAll(MAUT_Score, Sensitivity_Variabl1, Input_Sens_Range1)
+NodeLocation: 528,120,1
+NodeSize: 48,24
+WindState: 2,636,105,476,224
+ValueState: 2,40,50,400,300,1,MEAN
+Aliases: Alias Al1526411718
+GraphSetup: Grid:0~
+BarOverlap:100~
+{!40000|Att_StackedBar Graph_Primary_Valdim:0}~
+Att__BarOrigin MAUT_Tornado:0~
+{!40000|Att_GraphValueRange MAUT_Tornado:1,,0,0,,,10,0,1,0}~
+{!40000|Att_GraphIndexRange Sensitivity_Variabl1:1,,,,,,10}~
+{!40000|Flip:8}~
+{!50000|Graph_SortBySpread:0}~
+{!40000|Graph_AxisTitleFont:Arial,20,1}~
+{!40000|Graph_KeyTitleFont:,20,1}~
+{!40000|Graph_AxisLabelFont:,20,1}~
+{!40000|Graph_KeyFont:,16,1}
+ReformVal: [Sensitivity_Variabl1,Sensitivity_Levels1]
+Att__TotalsIndex: [Contract_Length]
+Att_ResultSliceState: [Strategy_Selection,5,Sensitivity_Levels1,3,Sensitivity_Variabl1,3]
+Att_OriginRole: Slice(Sensitivity_Levels1,Sensitivity_Levels1,2)
+{!40600|Att_ClusterIndex: Sensitivity_Levels1}
+
+Alias Al1526411102
+Title: MAUT Score
+Definition: 1
+NodeLocation: 528,240,1
+NodeSize: 48,24
+Original: MAUT_Score
+
+Close MAUT_Sens_Module
+
+Close MAUT_Scoring
+
+Alias Al1525695607
+Title: MAUT Score
+Definition: 0
+NodeLocation: 520,144,1
+NodeSize: 56,24
+Original: MAUT_Score
+
+Module Green_Value
+Title: Green Value
+Description: This module houses the logic that creates the attribute scores for Green Value for each of the Strategic Alternatives
+Author: djenkins
+Date: Mon, May 7, 2018 4:09 PM
+NodeLocation: 240,80,1
+NodeSize: 48,24
+DiagState: 2,724,11,565,546,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,65535,32766
+DiagramColor: 65535,65535,65535
+
+Variable Green_Utility_Raw
+Title: Green Utility Raw
+Description: This node is the assigned utility for the Decision maker for those decisions that are likely to result in improved "green-ness" for the company. In a more detailed model, these scores would be calculated based on some green parameters (compliance reporting, emissions, etc)
+Definition: Table(Strategy_Selection)(5,0,2.5,3.5,2)
+NodeLocation: 288,232,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Chance Green_Util_Uncertain
+Title: Green Util Uncertainty
+Description: This node injects uncertainty using a Beta distribution to those decsions that use Green Energy. The parameters of the Beta are selected to allow a right skewed change to the utility values assigned for each of the Renewable Energy Strategy Decision values.
+Definition: Beta( 100, 3, 0, 1)
+NodeLocation: 288,152,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Green_Util_w__Uncert
+Title: Green Util w/ Uncertainty
+Description: This node reads in the "good" Green Utilities and applies the uncertainty by multiplying the deterministic utility by the uncertainty variable.
+Definition: Green_Util_Uncertain*Green_Utility_Raw
+NodeLocation: 496,192,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Non_Green_Utility_Ra
+Title: Non-Green Utility Raw
+Description: This node is the assigned utility for the Decision maker for those decisions that are likely to result in decreased "green-ness" for the company. In a more detailed model, these scores would be calculated based on some green parameters (compliance reporting, emissions, etc)
+Definition: Table(Strategy_Selection)(0,1,0,0,0)
+NodeLocation: 288,344,1
+NodeSize: 56,24
+WindState: 2,662,100,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Chance Non_Green_Util_Uncer
+Title: Non-Green Util Uncertainty
+Description: This node injects uncertainty using a Beta distribution to those decisions that do not use Green Energy. The parameters of the Beta are selected to allow a left skewed change to the utility values assigned for each of the Renewable Energy Strategy Decision values.
+Definition: Beta( 3, 20, 0, 1)
+NodeLocation: 288,424,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Non_Green_Util_w__Un
+Title: Non-Green Util w/ Uncertainty
+Description: This node reads in the "bad" Green Utilities and applies the uncertainty by multiplying the deterministic utility by the uncertainty variable.
+Definition: Non_Green_Util_Uncer*Non_Green_Utility_Ra
+NodeLocation: 496,384,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Green_Measure
+Title: Green Measure
+Description: This node is the combined inputs of the uncertainty distributions and the raw Green Utility Values assigned for each Strategic Choice based on the type of Green Power the decision maker decides by the Strategy selection. These values make up the single utility for Green that will be sent into the multiattribute utility calculation.
+Definition: Green_Util_w__Uncert+Non_Green_Util_w__Un
+NodeLocation: 664,288,1
+NodeSize: 48,24
+WindState: 2,102,83,681,224
+ValueState: 2,40,50,400,300,1,PDFP
+Aliases: Alias Al1526427123
+
+Close Green_Value
+
+Module Prestige_Value
+Title: Prestige Value
+Description: This module houses the logic that creates the attribute scores for Prestige Value for each of the Strategic Alternatives
+Author: djenkins
+Date: Sun, May 13, 2018 3:44 PM
+NodeLocation: 240,200,1
+NodeSize: 48,24
+DiagState: 2,-33,8,649,569,17
+WindState: 2,102,83,476,224
+NodeColor: 65535,45873,39321
+DiagramColor: 65535,65535,65535
+
+Variable Prestige_Measure
+Title: Prestige Measure
+Description: This node is the combined inputs of the uncertainty distributions and the raw Prestige Utility Values assigned for each Strategic Choice based on the type of Renewable Energy Strategy the decsion maker decides by the Strategy selection. These values make up the single utility for Prestige that will be sent into the multiattribute utility calculation.
+Definition: Good_Prestige_Util_w + Bad_Prestige_Util_w_
+NodeLocation: 536,285,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,1,PDFP
+Aliases: Alias Al1526391347
+
+Chance Good_Prestige_Util_U
+Title: Good Prestige Util Uncertainty
+Description: This node injects uncertainty using a Beta distribution to those decsions that use should add Prestige. The parameters of the Beta are selected to allow a right skewed change to the utility values assigned for each of the Renewable Energy Strategy Decision values.
+Definition: Beta( 100, 3, 0, 1)
+NodeLocation: 144,96,1
+NodeSize: 72,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Good_Prestige_Utilit
+Title: Good Prestige Utility Raw
+Description: This node is the assigned utility for the Decision maker for those decisions that are likely to result in increased prestige for the company.
+Definition: Table(Strategy_Selection)(5,0,2,4,3)
+NodeLocation: 144,224,1
+NodeSize: 72,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Bad_Prestige_Utilit1
+Title: Bad Prestige Utility Raw
+Description: This node is the assigned utility for the Decision maker for those decisions that are likely to result in reduced prestige for the company.
+Definition: Table(Strategy_Selection)(0,1,0,0,0)
+NodeLocation: 144,352,1
+NodeSize: 72,24
+WindState: 2,642,74,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Chance Bad_Prestige_Utility
+Title: Bad Prestige Utility Uncertainty
+Description: This node injects uncertainty using a Beta distribution to those decisions that would detract from a company's Prestige. The parameters of the Beta are selected to allow a left skewed change to the utility values assigned for each of the Renewable Energy Strategy Decision values.
+Definition: Beta( 3, 20, 0, 1)
+NodeLocation: 152,472,1
+NodeSize: 80,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Good_Prestige_Util_w
+Title: Good Prestige Util w/ Uncertainty
+Description: This node reads in the "good" Prestige Utilities and applies the uncertainty by multiplying the deterministic utility by the uncertainty variable.
+Definition: Good_Prestige_Utilit*Good_Prestige_Util_U
+NodeLocation: 336,160,1
+NodeSize: 80,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Bad_Prestige_Util_w_
+Title: Bad Prestige Util w/ Uncertainty
+Description: This node reads in the "bad" Green Utilities and applies the uncertainty by multiplying the deterministic utility by the uncertainty variable.
+Definition: Bad_Prestige_Utility*Bad_Prestige_Utilit1
+NodeLocation: 336,408,1
+NodeSize: 80,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Close Prestige_Value
+
+Module Energy_Cost
+Title: Energy Cost
+Description: This module houses the logic that creates the attribute scores for Energy Cost for each of the Strategic Alternatives
+Author: djenkins
+Date: Tue, May 15, 2018 6:21 PM
+NodeLocation: 240,304,1
+NodeSize: 48,24
+DiagState: 2,192,115,827,576,17,10
+WindState: 2,102,83,476,224
+NodeColor: 65531,1,65535
+
+Module Cost_to_Build_Own
+Title: Cost to Build/Own
+Description: This node holds the inputs and calculations needed to assess how much expected OPEX and CAPEX a project may have for those strategies who choose to build and own the green energy solution.
+Author: djenkins
+Date: Mon, May 7, 2018 4:09 PM
+NodeLocation: 340,208,1
+NodeSize: 56,24
+DiagState: 2,740,1,579,220,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Alias Al1525659174
+Title: Build or Buy
+Definition: 1
+NodeLocation: 160,256,1
+NodeSize: 64,24
+Original: Build_or_Buy
+
+Variable Map_Build_to_Decisio
+Title: Map Build to Decision
+Description: This node maps the decision for Build or Buy in plain English to the Decision.
+Definition: Choice(Build, Build_or_Buy)~
+~
+
+NodeLocation: 344,256,1
+NodeSize: 56,24
+WindState: 2,603,239,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,610,226,400,300,0,MIDM
+
+Index Build
+Att_PrevIndexValue: ['Build','Buy']
+Title: Build
+Definition: ['Build','Buy']
+NodeLocation: 224,40,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Possible_CAPEX
+Title: Possible CAPEX
+Units: $
+Description: This table applies the CAPEX to the applicable strategy that will use build and own green energy, otherwise the table has zero OPEX.
+Definition: Table(Build,Type_of_Electricity)(~
+0,CAPEX_Probs,0,0,~
+0,0,0,0)
+NodeLocation: 344,192,1
+NodeSize: 56,24
+WindState: 2,805,22,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,698,16,400,300,0,MIDM
+ReformDef: [Build,0]
+ReformVal: [Build,Type_of_Electricity]
+Att_ResultSliceState: [Build,1,Sys_LocalIndex('Statistics'),1]
+
+Variable Expected_CAPEX
+Title: Expected CAPEX
+Description: This node maps the Expected CAPEX from the distribution to the appropriate Strategy and Type of Electricity Purchased.
+Definition: Possible_CAPEX[Build = Map_Build_to_Decisio]
+NodeLocation: 512,192,1
+NodeSize: 56,24
+WindState: 2,801,297,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Type_of_Electricity,Strategy_Selection,Undefined,0]
+Att_ResultSliceState: [Sys_LocalIndex('Statistics'),1,Strategy_Selection,1]
+
+Variable Possible_OPEX
+Title: Possible OPEX
+Units: $ per month
+Description: This table applies the OPEX to the applicable strategy that will use build and own green energy, otherwise the table has zero OPEX.
+Definition: Table(Build,Type_of_Electricity)(~
+0,12*OPEX_Probs,0,0,~
+0,0,0,0)
+NodeLocation: 344,320,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Build,0]
+ReformVal: [Build,Type_of_Electricity]
+
+Variable Expected_Ann__OPEX
+Title: Expected Ann. OPEX
+Units: $
+Description: This node maps the Expected OPEX from the distribution to the appropriate Strategy and Type of Electricity Purchased.
+Definition: Possible_OPEX[Build = Map_Build_to_Decisio]
+NodeLocation: 512,320,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+Att_ResultSliceState: [Sys_LocalIndex('Statistics'),1,Strategy_Selection,1]
+
+Chance OPEX_Probs
+Title: OPEX Probs
+Units: $ per month
+Description: This node provides a probability distribution of possible OPEX costs per month for the maintenance of an installed generation system. A normla distribution is used for ease of modelling. A more realistic model would require understanding the actual system, geographic location, resource availability, etc.
+Definition: Normal( 4000000, 50000 )
+NodeLocation: 144,320,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,STAT
+
+Chance CAPEX_Probs
+Title: CAPEX Probs
+Units: $
+Description: This node provides a distribution of possible CAPEX charges that the customer may have if installing their own renewable energy generation. A normal distribution is chosen for ease of design, but a more realistic model would evaluate anticipated costs based on investment size, location, type, etc.
+Definition: Normal( 300000000, 50000000 )
+NodeLocation: 152,192,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,PDFP
+
+Alias Al1526261591
+Title: Type of Electricity
+Definition: 1
+NodeLocation: 336,40,1
+NodeSize: 48,24
+Original: Type_of_Electricity
+
+Variable Expected_CAPEX2
+Title: Expected CAPEX2
+Definition: Sum( Expected_CAPEX, Type_of_Electricity)
+NodeLocation: 648,192,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Expected_OPEX2
+Title: Expected OPEX2
+Description: This determined the annual cost and then calculates the full 20 year discounted cost by multiplying 2*annual cost * the cumulative discount rate calculated for ten periods over 20 years
+Definition: 20*Sum(Expected_Ann__OPEX, Type_of_Electricity)*(Cumulative_DR1/10)
+NodeLocation: 648,320,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Strategy_Selection,Contract_Length]
+Att_ColorRole: Self
+{!40600|Att_ClusterIndex: Contract_Length}
+
+Variable Exp_Owning_Cost
+Title: Exp Owning Cost
+Units: $
+Description: This node is the expected costs to own and maintain the green gen solution, including the expected CAPEX and the sum of OPEX over 20 years
+Definition: Expected_OPEX2 + Expected_CAPEX2
+NodeLocation: 784,264,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,CDFP
+Aliases: Alias Al1526850346
+
+Index Contract_Length1
+Title: Contract Length
+Description: This node represents t various period of time that the customer could sign up for their energy contracts. In this model, we list out 2 year increments for consistency of the follow on calculations. We don't actual model different constructs around possible contract lengths.
+Definition: [2,4,6,8,10,12,14,16,18,20]
+IndexVals: ['item 1']
+NodeLocation: 472,40,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 232,126}
+
+Close Cost_to_Build_Own
+
+Module Total_Cost_of_Energy
+Title: Total Cost of Energy
+Description: This node brings together all the possible costs across the various strategies and sums them up for each of the strategy alternatives. The output is the total cost by strategy.
+Author: djenkins
+Date: Sun, May 13, 2018 11:14 PM
+NodeLocation: 560,256,1
+NodeSize: 56,24
+DiagState: 2,41,13,710,369,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Alias Al1526266418
+Title: Purchase Strategy
+Definition: 1
+NodeLocation: 120,128,1
+NodeSize: 56,24
+Original: Purchase_Strategy
+
+Alias Al1526266430
+Title: Type of Electricity
+Definition: 1
+NodeLocation: 264,56,1
+NodeSize: 48,24
+Original: Type_of_Electricity
+
+Alias Al1526266500
+Title: Possible Spend
+Definition: 1
+NodeLocation: 264,192,1
+NodeSize: 56,24
+Original: Total_Elec_Cost_by_T
+
+Variable Type_Elec_Map_Strate
+Title: Type Elec Map Strategy
+Units: Unitless
+Description: This node maps the Type of Electricity to the Strategy for further indexing in other calculations
+Definition: Choice(Type_of_Electricity, Purchase_Strategy)
+NodeLocation: 264,128,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Exp_Cost_by_Strategy
+Title: Exp Cost by Strategy
+Units: $
+Description: This node maps the cost of electricty types to the strategic choice to which they apply
+Definition: Total_Elec_Cost_by_T[Type_of_Electricity = Type_Elec_Map_Strate]
+NodeLocation: 400,168,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+GraphSetup: {!40000|Att_ForceCategorical Graph_Primary_Valdim:1}~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Null,Strategy_Selection,Undefined,1,1]
+NumberFormat: 2,D,3,3,0,1,3,0,$,0,"ABBREV",0,,,0,0,15
+Att_XRole: -1
+Att_ColorRole: Strategy_Selection
+{!40600|Att_ClusterIndex: Null}
+
+Alias Al1526417031
+Title: Exp RECs Cost
+Definition: 1
+NodeLocation: 400,232,1
+NodeSize: 56,24
+Original: Exp_RECs_Cost
+
+Objective Total_Exp_Energy_Cos
+Title: Total Exp Energy Cost
+Units: $
+Description: This node brings together all the costs associated with the energy purchasing decsions made by each strategy, including electricity, RECs, Fines, CAPEX, and OPEX as applicable.
+Definition: Exp_Cost_by_Strategy + Exp_RECs_Cost + Exp_Fines_Cost + Exp_Owning_Cost
+NodeLocation: 544,272,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,CDFP
+Aliases: Alias Al1526436038
+GraphSetup: Att_GraphValueRange Graph_Cdf_Valdim:1,,,1,,,5~
+Att_GraphValueRange Graph_KDE_Valdim:1,0,0,1,,,5,0,16n,0~
+Graph_LineThickness:4~
+Grid:0~
+Att_GraphValueRange Total_Exp_Energy_Cos:|1:1,,0,,,,,1G,2.6G,0~
+{!40400|Sys_PdfSmoothMethod:1}~
+Graph_KeyFont:,18,1~
+Graph_AxisLabelFont:,20,1~
+Graph_KeyTitleFont:,22,1~
+Graph_AxisTitleFont:Arial,22,1
+ReformVal: [Undefined,Strategy_Selection,Undefined,1]
+NumberFormat: 2,D,3,2,0,1,3,0,$,6,"ABBREV",0,,,0,0,15,
+ProbabilityNumberFmt: 2,D,1,2,0,0,1,1,$,0,"ABBREV",0,,,0,0,15,
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+{!50000|Att_ColumnWidths: [,Sys_LocalIndex('Statistics'),\([65,65,65,65,64])]}
+
+Alias Al1526423649
+Title: Exp Fines Cost
+Definition: 1
+NodeLocation: 400,296,1
+NodeSize: 56,24
+Original: Exp_Fines_Cost
+
+Variable Energy_Cost_Measure
+Title: Energy Cost Measure
+Units: $
+Description: This node is the output of all the combined energy related costs for each strategyfrom the Energy Cost model.
+Definition: Total_Exp_Energy_Cos
+NodeLocation: 680,272,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,650,553,0,MIDM
+Aliases: Alias Al1526424120, Alias Al1526855548, Alias Al1526851594
+GraphSetup: Graph_KeyFont:,16,0~
+Graph_AxisLabelFont:,16,0~
+CdfSteps:1~
+Graph_KeyTitleFont:,20,1~
+Graph_AxisTitleFont:Arial,20,1~
+{!40400|Sys_PdfSmoothMethod:1}~
+Att_GraphValueRange Energy_Cost_Measure:|1:1,,1,,,,,0,1,0~
+Graph_LineThickness:3~
+Grid:0
+ReformVal: [Undefined,Strategy_Selection,Undefined,1]
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+
+Alias Al1526850346
+Title: Expected Owning EXP
+Definition: 1
+NodeLocation: 400,360,1
+NodeSize: 56,24
+Original: Exp_Owning_Cost
+
+Close Total_Cost_of_Energy
+
+Module Electricity_Costs
+Title: Electricity Costs
+Description: This node houses the various inputs and calculations that determine what the cost of a given energy purchasing strategy will be based upon the energy usage from the historical usage of the location being evaluated. 
+Author: djenkins
+Date: Mon, May 7, 2018 4:09 PM
+NodeLocation: 340,336,1
+NodeSize: 56,24
+DiagState: 2,750,13,432,346,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Variable Base_Usage
+Title: Base Usage
+Units: kWh
+Description: The amount of  Base electricity used per the contract per month
+Definition: Table(Months)(1.041659M,1.24374M,1.121552M,896.592K,1.216633M,1.173761M,1.404394M,1.608333M,1.578202M,1.578202M,1.678012M,1.24535M)
+NodeLocation: 248,128,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Types_of_Charges,Months]
+
+Variable Intermed_Usage
+Title: Intermed Usage
+Units: kWh
+Description: The amount of  Intermediate electricity used per the contract per month
+Definition: Table(Months)(1.84045M,1.988566M,2.153463M,1.912612M,2.58457M,2.783221M,2.994597M,2.910176M,2.662717M,2.662717M,2.816611M,2.064635M)
+IndexVals: ['item 1']
+NodeLocation: 248,192,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Types_of_Charges,Months]
+
+Variable Peak_Usage
+Title: Peak Usage
+Units: kWh
+Description: The amount of  Peak electricity used per the contract per month
+Definition: Table(Months)(451.68K,313.512K,362.861K,174.435K,242.489K,269.803K,270.924K,470.376K,430.59K,430.59K,471.115K,510.619K)
+NodeLocation: 248,256,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,168}
+
+Variable Demand_kW
+Title: Demand kW
+Units: kW
+Description: The kW peak demand used for Demand Charges
+Definition: Table(Months)(5864,6334,6703,6415,6827,7040,7370,7568,7596,7596,6958,6786)
+NodeLocation: 248,320,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+
+Index Months
+Att_PrevIndexValue: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+Title: Months
+Description: Months for the billing cycle of customer 
+Definition: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+NodeLocation: 352,48,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+{!40300|Att_SlicerPopupSize: 232,196}
+
+Constant VAT
+Title: VAT
+Units: Percentage
+Description: Value Added Tax Rate
+Definition: 0.16
+NodeLocation: 704,432,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Total_Usage
+Title: Total Usage
+Units: kWh
+Description: Total Electricty Usage per month summed up from the different amounts of Base, Intermediate, and Peak.
+Definition: Base_Usage + Intermed_Usage + Peak_Usage
+NodeLocation: 88,224,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Adder_Charges1
+Title: Adder Charges
+Units: $
+Description: This box is a placeholder for charges like transmission, distriibution, ancillaries, and outher auxillary charges
+Definition: Adder_Charge_Rate*Total_Usage
+NodeLocation: 248,432,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+ReformVal: [Undefined,Months]
+
+Constant Adder_Charge_Rate
+Title: Adder Charge Rate
+Units: $ per kWh
+Description: This node is a proxy rate for all the ancillary charges a customer may face such as transmission, supplier, miscellaneous fees, etc. It is derived from an existing customer's charges over the course of a year.
+Definition: 0.008
+NodeLocation: 88,432,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Adder_Annual_Cost
+Title: Adder Annual Cost
+Units: $
+Description: Total of the monthly adder charges for an Annual Cost
+Definition: Sum( Adder_Charges1, Months )*(2*Discount_Rate/20)~
+
+NodeLocation: 528,432,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Alias Al1526245833
+Title: Avg Rates over 20 yrs
+Definition: 1
+NodeLocation: 384,224,1
+NodeSize: 56,24
+Original: Avg_Rates_for_20_yrs
+
+Variable Base_Energy_Cost
+Title: Base Energy Cost
+Units: $
+Description: This is the monthly Base charges based on monthly usage times the Base rate
+Definition: Base_Usage * Avg_Rates_for_20_yrs[Types_of_Charges= 'Base Usage']
+NodeLocation: 528,128,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Intermed_Energy_Cost
+Title: Intermed Energy Cost
+Units: $
+Description: This is the monthly Intermediate charges based on monthly usage times the Intermediate rate
+Definition: Intermed_Usage * Avg_Rates_for_20_yrs[Types_of_Charges= 'Intermed Usage']
+NodeLocation: 528,192,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Peak_Energy_Cost
+Title: Peak Energy Cost
+Units: $
+Description: This is the monthly Peak charges based on monthly usage times the peak rate
+Definition: Peak_Usage * Avg_Rates_for_20_yrs[Types_of_Charges= 'Peak Usage']
+NodeLocation: 528,256,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+
+Variable Demand_Cost
+Title: Demand Cost
+Units: $
+Description: This is the monthly demand charges based on the Demand Rate and the Demand kW
+Definition:  Demand_kW* Avg_Rates_for_20_yrs[Types_of_Charges= 'Demand kW']
+NodeLocation: 528,320,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Type_of_Electricity,Months]
+
+Variable Usage_Demand_Annual_
+Title: Usage/Demand Annual Costs
+Units: $
+Description: This is the expected combined usage and demand charges based on the historical twelve months of utility bills of customer
+Definition: SUM(Base_Energy_Cost + Intermed_Energy_Cost + Peak_Energy_Cost + Demand_Cost, Months)
+NodeLocation: 704,208,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [0,Months,2,Undefined,1]
+Att_ResultSliceState: [Type_of_Electricity,1,Months,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+{!40600|Att_ClusterIndex: Sys_LocalIndex('Probability')}
+
+Variable Annual_Elec_Costs_by
+Title: Annual Elec Costs by Type
+Units: $
+Description: This is the combined expected annual costs of energy based combining the usage, demand, and adder fees with VAT applied
+Definition: Usage_Demand_Annual_ + Adder_Annual_Cost + Usage_Demand_Annual_*VAT
+NodeLocation: 704,360,1
+NodeSize: 64,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,PDFP,0
+
+Alias Al1526393210
+Title: Type of Electricity
+Definition: 1
+NodeLocation: 576,48,1
+NodeSize: 48,24
+Original: Type_of_Electricity
+
+Alias Al1526393209
+Title: Types of Charges
+Definition: 1
+NodeLocation: 464,48,1
+NodeSize: 48,24
+Original: Types_of_Charges
+
+Variable Total_Elec_Cost_by_T
+Title: Total Elec Cost by Type
+Units: $
+Description: This is the 20 year expected total cost for electricity
+Definition: 20*Annual_Elec_Costs_by
+NodeLocation: 896,360,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1526266500
+GraphSetup: {!40000|Att_ForceCategorical Graph_Primary_Valdim:1}~
+{!40000|Att_CatLineStyle Graph_Stats_Valdim:5}~
+{!40400|Sys_PdfSmoothMethod:1}
+ReformVal: [Type_of_Electricity,Type_of_Electricity,Undefined,0,1]
+Att__TotalsIndex: [Sys_LocalIndex('Statistics')]
+Att_ResultSliceState: [Strategy_Selection,3,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+Att_ColorRole: Type_of_Electricity
+{!40600|Att_ClusterIndex: Null}
+
+Close Electricity_Costs
+
+Module Electricity_Rates
+Title: Electricity Rates
+Description: This node houses the rates that will be applicable to each of the types  of electricity as well as other input parameters dealing with prices of electricty over time.
+Author: djenkins
+Date: Sun, May 13, 2018 11:14 PM
+NodeLocation: 120,256,1
+NodeSize: 56,24
+DiagState: 2,192,-11,603,467,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Index Types_of_Charges
+Att_PrevIndexValue: ['Base Usage','Intermed Usage','Peak Usage','Demand kW']
+Title: Types of Charges
+Units: $ per kW
+Description: This node lists out the core types of electricity charges that an electricty consumer would pay for at different rates. Base, Intermediate, and Peak Usage are the charges for energy usage as a commodity, and the Demand kW charge is based on a peak period of usage during a pre-defined period of time in the past. These rates would all be applicable based on the location, supplier, and tariff structure the customer would be signed up to use.
+Definition: ['Base Usage','Intermed Usage','Peak Usage','Demand kW']
+NodeLocation: 464,96,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526393209
+{!40300|Att_SlicerPopupSize: 227,70}
+
+Constant Prices_per_type
+Att_PrevIndexValue: [0.9241,1.0397,1.8384,219.06]
+Title: Prices per type
+Units: $ per kWh
+Description: This node is the table of rates that customers will pay for the four types of charges they will pay based on the type of electricity they buy.
+Definition: Table(Types_of_Charges,Type_of_Electricity)(~
+1,0.7,1.2,0.9241,~
+1.2,0.7,1.3,1.0397,~
+1.7,0.7,1.4,1.8384,~
+200,100,150,219.06)
+NodeLocation: 496,296,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,604,438,0,MIDM
+ReformDef: [Undefined,Types_of_Charges]
+ReformVal: [Types_of_Charges,0,Undefined,Undefined,Undefined,2]
+Att_ResultSliceState: [Types_of_Charges,2]
+Att_ColorRole: Null
+
+Index Contract_Length
+Att_PrevIndexValue: [2,4,6,8,10,12,14,16,18,20]
+Title: Contract Length
+Description: This node represents t various period of time that the customer could sign up for their energy contracts. In this model, we list out 2 year increments for consistency of the follow on calculations. We don't actual model different constructs around possible contract lengths.
+Definition: [2,4,6,8,10,12,14,16,18,20]
+NodeLocation: 352,96,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 252,126}
+
+Constant PPA_Elevator
+Title: PPA Elevator
+Units: Percent
+Description: This node represents how much the PPA rates will go up per year based on the contractual terms the customer signs for the Renewable Power Puyrchase Agreement.
+Definition: 1
+NodeLocation: 176,152,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 227,28}
+
+Chance Retail_Elevator
+Title: Retail Elevator
+Units: Percent
+Description: This node represents a probabilistic input for how much we anticipate the retail electricity rates will go up per year based on the contractual terms or rate tariff structure that the customer is under for their energy purchases. A normal distribution is used for simplicity of modelling. A more realistic method would be to assess market trends over the last few decades and build a custom probability distribution.
+Definition: Normal( 2.5, 0.3 )
+NodeLocation: 176,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,CDFP
+
+Chance Rate_of_Inflation
+Title: Rate of Inflation
+Units: Percent
+Description: This is a probabilistic input for anticiapted rate of inflation. A normal distribution is used for simplicity.
+Definition: Normal( 1, 0.1 )
+NodeLocation: 176,280,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,CDFP
+
+Variable Elec_Rates_over_Time
+Title: Elec Rates over Time
+Units: $ per kWh
+Description: This node calculates the expected rates by type of charges for the type of electricty the customer will by, calculated in two year increments based on the Contract Length index.
+Definition: Time_Price_Growth*Prices_per_type
+NodeLocation: 496,216,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MEAN
+GraphSetup: {!40000|Att_GraphValueRange Elec_Rates_over_Time:|1:1,,0,1,,,,0,6,0}
+ReformVal: [Type_of_Electricity,Contract_Length,Undefined,1,1]
+Att_ResultSliceState: [Contract_Length,8,Types_of_Charges,2,Type_of_Electricity,2]
+Att_XRole: -1
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+
+Variable Time_Price_Growth
+Title: Time Price Growth
+Units: Unitless
+Description: This node is simply calculating the anticipated growth over time of the various rates the customer may be on for their energy spend. This growth factor will be used to determine anticipated rates over the next twenty years in increments determined by Contract Length. Using Contract Length will enable improvement of this model to tie out to actual contracted terms, which would likely determine the periodicity of rate increases.
+Definition: Table(Type_of_Electricity,Contract_Length)(~
+((1+((Rate_of_Inflation +Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),(((1+((Rate_of_Inflation+Retail_Elevator)/100))^Contract_Length)/((1+(Discount_Rate/100))^Contract_Length)),~
+((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),~
+((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation +PPA_ELevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),~
+((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length),((1+((Rate_of_Inflation + Retail_Elevator)/100))^Contract_Length)/((1+Discount_Rate/100)^Contract_Length))
+NodeLocation: 352,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+ReformDef: [Type_of_Electricity,Contract_Length]
+ReformVal: [Undefined,Contract_Length,Undefined,Undefined,2]
+DisplayInputs: Object Object, Object Chance, Chance Discount_Rate2
+Att_ResultSliceState: [Contract_Length,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+{!50000|Att_ColumnWidths: [,Type_of_Electricity,\([723,470,513])]}
+
+Variable Avg_Rates_for_20_yrs
+Title: Avg Rates for 20 yrs
+Units: $ per kWh / $ per kW
+Description: To simplify the math of future calculations, this node determines the average rate for a twenty year period for the different types of charges, based on the types of electricty that can be chosen. This twenty year average will be used in the remainig calculations for energy spend throughout the rest of the pricing module.
+Definition: Average( Elec_Rates_over_Time, Contract_Length )
+NodeLocation: 648,216,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526245833
+GraphSetup: {!40000|Att_GraphValueRange Avg_Rates_for_20_yrs:1,,1,,,,,0,10,0|1:1,,0,,,,,0,10,0}
+ReformVal: [Types_of_Charges,Type_of_Electricity,Undefined,2,1]
+Att_ResultSliceState: [Types_of_Charges,4,Type_of_Electricity,1,Sys_LocalIndex('Step'),1]
+Att_XRole: -1
+{!40200|Att_GraphSetupSlices: [3,1,DensityIndex,1]}
+{!40600|Att_ClusterIndex: Sys_LocalIndex('Statistics')}
+
+Index Type_of_Electricity
+Att_PrevIndexValue: ['Retail Green','Own Green','PPA','Retail Any']
+Title: Type of Electricity
+Description: This node lists out the index of the types of electricity purchase that the decicion maker can choose
+Definition: ['Retail Green','Own Green','PPA','Retail Any']
+IndexVals: ['item 1']
+NodeLocation: 576,96,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526261591, Alias Al1526266430, Alias Al1526393210, Alias Al1526416111, Alias Al1526422917
+{!40300|Att_SlicerPopupSize: 252,70}
+
+Chance Discount_Rate2
+Title: Discount Rate
+Definition: Normal( 4, 1.2)
+NodeLocation: 176,344,1
+NodeSize: 48,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,PDFP
+DisplayOutputs: Variable Time_Price_Growth
+
+Close Electricity_Rates
+
+Module Cost_for_RECs
+Title: Cost for RECs
+Description: This node holds the inputs and calculations needed to assess how much it will cost to use RECs for those strategies that require RECs.
+Author: djenkins
+Date: Tue, May 15, 2018 6:21 PM
+NodeLocation: 340,56,1
+NodeSize: 56,24
+DiagState: 2,572,2,664,301,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Index RECs_Index
+Att_PrevIndexValue: ['No RECs','Yes RECs','No RECs','No RECs']
+Title: RECs Index
+Units: Unitless
+Description: This node assigns RECs or NO RECs which will be applied to determine which decisions to apply REC costs to based on the type of electricity chosen.
+Definition: ['No RECs','Yes RECs','No RECs','No RECs']
+NodeLocation: 168,48,1
+NodeSize: 48,24
+WindState: 2,677,98,476,224
+DisplayOutputs: Chance RECs_Price_Uncertain
+
+Variable Apply_RECs_if_needed
+Title: Apply RECs if needed
+Units: Unitless
+Description: This node applies a tag of "Yes RECs" for those decsions that will require RECs to be purchased
+Definition: Choice( RECs_Index , Renew_Energy_Strateg)
+NodeLocation: 336,168,1
+NodeSize: 56,24
+WindState: 2,748,43,473,234
+ValueState: 2,104,107,416,303,,MIDM
+
+Alias Al1526415732
+Title: Renew Energy Strategy
+Definition: 1
+NodeLocation: 160,168,1
+NodeSize: 64,24
+Original: Renew_Energy_Strateg
+
+Alias Al1526416111
+Title: Type of Electricity
+Definition: 1
+NodeLocation: 296,48,1
+NodeSize: 48,24
+Original: Type_of_Electricity
+
+Variable Exp_RECs_Cost
+Title: Exp RECs Cost
+Units: $
+Description: This node applies the RECs based on the decsion of energy type and applies it to the Strategy selected from the Strategy Table. This ensures that only strategies that result in the need to buy RECs are actually applied a cost for the RECs.
+Definition: 2M*Possible_RECs_Cost[RECs_Index = Apply_RECs_if_needed]*(2*Cumulative_DR1)/20
+NodeLocation: 488,168,1
+NodeSize: 56,24
+WindState: 2,790,190,476,219
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1526417031
+
+Chance RECs_Price_Uncertain
+Title: RECs Price Uncertainty
+Units: $ per CO2 tonne
+Description: This node creates a triangular distribution for the possible rates the customer may pay to purchase RECs. This probability distribution simplifies the pricing for ease of this project, but building out a more realistic model would require creating a distribution based on the actual costs of RECs in a given market or country, as well as applying uncertainty based on past variations of REC prices due to market dynamics and changes in the regulatoryu environment.
+Definition: Triangular( 80, 100, 135 )
+NodeLocation: 336,264,1
+NodeSize: 56,32
+WindState: 2,749,95,476,224
+ValueState: 2,232,235,416,303,1,PDFP
+DisplayInputs: Object Object, Object Index, Index RECs_Index
+
+Variable Possible_RECs_Cost
+Title: Possible RECs Cost
+Units: $ per CO2 tonne
+Description: This table applies the pricing from the distribution only to those decisions that will require purchasing RECs, otherwise it applies zero cost.
+Definition: Table(RECs_Index)(0, RECs_Price_Uncertain,0,0)
+NodeLocation: 488,264,1
+NodeSize: 56,24
+WindState: 2,771,79,554,350
+DefnState: 2,585,152,416,303,0,DFNM
+ValueState: 2,40,50,400,300,0,CDFP,0
+
+Close Cost_for_RECs
+
+Module Cost_for_Fines
+Title: Cost for Fines
+Description: This node holds the inputs and calculations needed to assess how much expected fines may cost for those strategies that choose possibly risky non-green options
+Author: djenkins
+Date: Tue, May 15, 2018 6:21 PM
+NodeLocation: 340,136,1
+NodeSize: 56,24
+DiagState: 2,60,-7,664,376,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Index Fines
+Att_PrevIndexValue: ['No Fines','No Fines','Fines','No Fines']
+Title: Fines
+Units: Unitless
+Description: This node index's Fines of No Fines that can be applied to determine which strategies apply fines for not meeting green or compliance requirements for greenhouse gas reductions or mitigation.
+Definition: ['No Fines','No Fines','Fines','No Fines']
+NodeLocation: 184,64,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+
+Variable Apply_Fines_if_neede
+Title: Apply Fines if needed
+Units: Unitless
+Description: This node applies a tag of "Fines" for those decsions that  could result in fines for failure to meet greenhouse gas reductions or reporting.
+Definition: Choice( Fines , Renew_Energy_Strateg)
+NodeLocation: 352,184,1
+NodeSize: 56,24
+WindState: 2,45,45,473,234
+ValueState: 2,104,107,416,303,,MIDM
+
+Alias Al1526422916
+Title: Renew Energy Strategy
+Definition: 1
+NodeLocation: 176,184,1
+NodeSize: 64,24
+Original: Renew_Energy_Strateg
+
+Alias Al1526422917
+Title: Type of Electricity
+Definition: 1
+NodeLocation: 312,64,1
+NodeSize: 48,24
+Original: Type_of_Electricity
+
+Variable Exp_Fines_Cost
+Title: Exp Fines Cost
+Units: $
+Description: This node applies the possible fines based on the decsion of energy type and applies it to the applicable Strategy selected from the Strategy Table. This ensures that only strategies that result in the purchase of non-compliant electricty will have fines included in the calculation of total anticipated costs..
+Definition: 2M*Possible_Fines[Fines = Apply_Fines_if_neede]*(2*Cumulative_DR1/20)~
+
+NodeLocation: 504,184,1
+NodeSize: 48,24
+WindState: 2,147,216,476,219
+ValueState: 2,40,50,400,300,1,CDFP
+Aliases: Alias Al1526423649
+ReformVal: [Undefined,Strategy_Selection,Undefined,Undefined,1]
+Att_XRole: -1
+
+Chance Fines_Uncertainty
+Title: Fines Uncertainty
+Units: $
+Description: This node creates a log-normal distribution for the possible fines the customer may pay for failure to mitigate greenhouse gas contribution. This probability distribution simplifies the pricing for ease of this project, but building out a more realistic model would require creating a distribution based on the regulatory environment, anticipated changes, and potentiel penalty structures. We use log-normal because it provides higher probability for lower fines, but leaves open th real risk for much larger penalties to be assigned, which is the likley case in reality.
+Definition: LogNormal( median:50, gsdev:2 )
+NodeLocation: 352,280,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,232,235,416,303,1,PDFP
+
+Variable Possible_Fines
+Title: Possible Fines
+Units: $
+Description: This table applies the values from the fines distribution only to those decisions that could result in a fine applied for failure to comply.
+Definition: Table(Fines)(0,0,Fines_Uncertainty,0)
+NodeLocation: 504,280,1
+NodeSize: 48,24
+WindState: 2,102,83,367,350
+DefnState: 2,585,152,416,303,0,DFNM
+ValueState: 2,40,50,400,300,1,CDFP
+GraphSetup: Flip:0
+
+Close Cost_for_Fines
+
+Module Total_Cost_Sensitivi
+Title: Total Cost Sensitivity
+Description: This node houses the logic for calculating the sensitivities of Total Cost for select input variables that feed into Total Cost
+Author: djenkins
+Date: Tue, May 15, 2018 6:21 PM
+NodeLocation: 560,336,1
+NodeSize: 56,24
+DiagState: 2,1,0,670,612,17,10
+WindState: 2,102,83,476,224
+NodeColor: 1,26216,52427
+
+Constant Sensitivity_Levels
+Att_PrevIndexValue: ['Low','Baseline','High']
+Title: Sensitivity Levels
+Description: This node houses the range of calculations we want to do for sensitivity analysis, from low to baseline to high.
+Definition: Table(Self)(0.5,1,1.5)
+IndexVals: ['Low','Baseline','High']
+NodeLocation: 96,200,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+Aliases: Alias Al1526556917
+NumberFormat: 2,%,4,2,0,0,4,0,$,0,"ABBREV",0,,,0,0,15
+
+Variable Sensitivity_Variable
+Title: Sensitivity Variables
+Description: This node pulls together the input variables from across the cost model to use for the Enerfgy Cost sensitivity analysis
+Definition: [Retail_Elevator,Rate_of_Inflation,VAT,Adder_Charge_Rate,CAPEX_Probs,OPEX_Probs,PPA_Elevator,Discount_Rate]
+IndexVals: ['item 1']
+NodeLocation: 264,64,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,CDFP
+ReformVal: [Type_of_Electricity,Self]
+Att_ResultSliceState: [Type_of_Electricity,4,Types_of_Charges,1,Self,1]
+
+Variable Input_Sens_Range
+Title: Input Sens Range
+Units: N/A
+Description: This node creates an array of the sensitivity variables for the Energy Cost analysis bucketed by the Sensitivity Levels
+Definition: Sensitivity_Levels*Sensitivity_Variable
+NodeLocation: 264,155,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Type_of_Electricity,Sensitivity_Variable]
+Att_ResultSliceState: [Sensitivity_Levels,3,Sensitivity_Variable,1,Sys_LocalIndex('Step'),1]
+
+Variable Energy_Cost_Sensitiv
+Title: Energy Cost Sensitivity
+Units: $
+Description: This node uses a WhatIfAll analysis to determine the sensitivity of Energy Cost to the selected variables based on a range of sensitivity determined by the Input_Sens_Range.
+Definition: WhatIfAll(Energy_Cost_Measure, Sensitivity_Variable, Input_Sens_Range)
+NodeLocation: 448,64,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+Aliases: Alias Al1526851653, Alias Al1526411474
+GraphSetup: Flip:8~
+Graph_KeyTitleFont:,20,1~
+Graph_KeyFont:,17,1~
+Graph_AxisLabelFont:,20,1~
+Graph_AxisTitleFont:Arial,20,1~
+BarOverlap:100~
+Att_StackedBar Graph_Primary_Valdim:0~
+Att__BarOrigin Energy_Cost_Sensitiv:0~
+Att_GraphValueRange Energy_Cost_Sensitiv:1,,0,0,,,10,1.1G,2.2G,0~
+Att_GraphIndexRange Sensitivity_Variable:1,,,,,,10~
+Grid:0~
+Frame:1
+ReformVal: [Sensitivity_Variable,Sensitivity_Levels]
+Att_ResultSliceState: [Strategy_Selection,3,Sensitivity_Levels,1,Sensitivity_Variable,5]
+Att_OriginRole: Slice(Sensitivity_Levels,Sensitivity_Levels,2)
+{!40600|Att_ClusterIndex: Sensitivity_Levels}
+
+Variable Fractile_Levels
+Title: Fractile Levels
+Units: N/A
+Description: This node provides Sensitivity Levels for a Sensitivity Analysis that is to be done using Fractiles of the Chance variables - this is a placeholder node that isn't part of the final analysis
+Definition: Table(Sensitivity_Levels)(0.1,0.5,0.9)
+NodeLocation: 264,246,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+NumberFormat: 2,%,4,3,0,0,4,0,$,0,"ABBREV",0,,,0,0,15
+
+Variable Fractile_Tornado
+Title: Fractile Tornado
+Description: This node uses a WhatIfAll analysis to determine the sensitivity of Energy Cost to the selected chance variables based on a range of sensitivity determined by the Fractile_Levels.
+Definition: WhatIfAll(Energy_Cost_Measure, Chance_Variables, GetFract(Chance_Variables, Fractile_Levels))
+NodeLocation: 448,246,1
+NodeSize: 56,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,1,MIDM
+GraphSetup: {!40000|Att_GraphValueRange Fractile_Tornado:1,,1,0,,,,2.1G,2.7G,0}~
+Att__BarOrigin Fractile_Tornado:0~
+{!40000|Flip:8}~
+{!40000|Att_StackedBar Graph_Primary_Valdim:0}~
+BarOverlap:100
+ReformVal: [Chance_Variables,Sensitivity_Levels]
+Att__TotalsIndex: []
+Att_ResultSliceState: [Strategy_Selection,5,Sensitivity_Levels,1,Chance_Variables,1]
+Att_OriginRole: Slice(Sensitivity_Levels,Sensitivity_Levels,2)
+{!40600|Att_ClusterIndex: Sensitivity_Levels}
+
+Variable Chance_Variables
+Title: Chance Variables
+Definition: [Retail_Elevator,Rate_of_Inflation,CAPEX_Probs,OPEX_Probs,Discount_Rate]
+NodeLocation: 264,336,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+ReformVal: [Type_of_Electricity,Self]
+Att_ResultSliceState: [Type_of_Electricity,4,Types_of_Charges,1,Self,1]
+
+Alias Al1526855548
+Title: Energy Cost Measure
+Definition: 1
+NodeLocation: 416,155,1
+NodeSize: 56,24
+Original: Energy_Cost_Measure
+
+Close Total_Cost_Sensitivi
+
+Alias Al1526851594
+Title: Energy Cost Measure
+Definition: 1
+NodeLocation: 704,256,1
+NodeSize: 56,24
+Original: Energy_Cost_Measure
+
+Alias Al1526851653
+Title: Energy Cost Sensitivity
+Definition: 1
+NodeLocation: 704,336,1
+NodeSize: 56,24
+Original: Energy_Cost_Sensitiv
+
+Module Discount_Rate_Calcs
+Title: Discount Rate Calcs
+Author: Don Jenkins~
+UMass Boston
+Date: Sun, May 8, 2022 9:17 PM
+NodeLocation: 120,416,1
+NodeSize: 64,24
+DiagState: 2,0,0,624,210,17,10
+WindState: 2,0,0,720,350
+NodeColor: 1,26216,52427
+
+Chance Discount_Rate
+Title: Discount Rate
+Definition: Normal( 4, 1.2)
+NodeLocation: 288,200,1
+NodeSize: 48,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,1,PDFP
+
+Variable Period_Discount_Rat1
+Title: Period Discount Rates
+Definition: Table(Contract_Length)(1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length),1/((1+Discount_Rate/100)^Contract_Length))
+NodeLocation: 472,200,1
+NodeSize: 64,24
+WindState: 2,0,0,720,350
+DefnState: 2,40,50,400,300,0,DFNM
+ValueState: 2,40,50,400,300,0,MIDM
+{!50000|Att_ColumnWidths: [280]}
+
+Variable Cumulative_DR1
+Title: Cumulative DR
+Definition: sum(Period_Discount_Rat1, Contract_Length)
+NodeLocation: 648,200,1
+NodeSize: 56,24
+WindState: 2,0,0,720,350
+ValueState: 2,40,50,400,300,0,MIDM
+
+Index Contract_Length2
+Title: Contract Length
+Description: This node represents t various period of time that the customer could sign up for their energy contracts. In this model, we list out 2 year increments for consistency of the follow on calculations. We don't actual model different constructs around possible contract lengths.
+Definition: [2,4,6,8,10,12,14,16,18,20]
+IndexVals: ['item 1']
+NodeLocation: 472,40,1
+NodeSize: 48,24
+WindState: 2,102,83,476,224
+ValueState: 2,40,50,400,300,0,MIDM
+{!40300|Att_SlicerPopupSize: 232,126}
+
+Close Discount_Rate_Calcs
+
+Close Energy_Cost
+
+Alias Al1526411474
+Title: Price Tornado
+Definition: 1
+NodeLocation: 520,384,1
+NodeSize: 56,24
+Original: Energy_Cost_Sensitiv
+
+Alias Al1526411718
+Title: MAUT Tornado
+Definition: 1
+NodeLocation: 520,64,1
+NodeSize: 56,24
+Original: MAUT_Tornado
+
+Alias Al1526436038
+Title: Combined Costs
+Definition: 1
+NodeLocation: 520,304,1
+NodeSize: 56,24
+Original: Total_Exp_Energy_Cos
+
+Alias Al1526849243
+Title: MAUT Score Importance
+Definition: 1
+NodeLocation: 520,224,1
+NodeSize: 56,24
+NodeInfo: 1,1,1,1,1,1,0,0,0,0,,0,1,0
+Original: MAUT_Score_Importanc
+
+Close Sustainable_Energy_P
+
