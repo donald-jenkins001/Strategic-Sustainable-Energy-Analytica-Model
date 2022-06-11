@@ -1,11 +1,11 @@
 # Strategic-Sustainable-Energy-Analytica-Model
-This is the Analytica model discussed in the coming paper coauthored by Don Jenkins and Jeff Keisler. It is designed to help inform large companies on their strategic sustainable energy purchasing decisions.
-
-Submitted for review
+This is the Analytica model discussed in the paper coauthored by Don Jenkins and Jeff Keisler. It is designed to help inform large companies on their strategic sustainable energy purchasing decisions.
 
 Journal: Environment Systems and Decisions (https://www.springer.com/journal/10669/)
 
 Title: A Decision Analytic Tool for Corporate Strategic Sustainable Energy Purchases
+
+Paper is available at Springer: https://rdcu.be/cPlbP
 
 Authors:
 
